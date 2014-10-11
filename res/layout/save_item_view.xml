@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="120dp"
+    android:layout_height="130dp"
+    android:orientation="vertical"
+    android:paddingLeft="10dp" >
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/like_pic" />
+
+    <RelativeLayout
+        android:id="@+id/profile_item_menu_container"
+        android:layout_width="124dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.20"
+        android:paddingRight="12dp" >
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignBottom="@+id/date_liked"
+            android:src="@drawable/ic_profile_like" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/date_liked"
+            android:layout_toRightOf="@+id/imageView2"
+            android:fontFamily="sans-serif"
+            android:text="0"
+            android:textColor="#ECA729"/>
+
+        <TextView
+            android:id="@+id/date_liked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif"
+            android:paddingRight="3dp"
+            android:text="08/25/2014"
+            android:textColor="#ECA729" />
+
+    </RelativeLayout>
+
+</LinearLayout>

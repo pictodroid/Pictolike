@@ -1,0 +1,22 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:weightSum="1.0" >
+
+    <ListView
+        android:id="@+id/listSettings"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:entries="@array/settings_array" >
+    </ListView>
+    
+    <WebView 
+    android:id="@+id/webView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+/>    
+      
+</LinearLayout>

@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutview"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#ffffff" >
+
+    <Button
+        android:id="@+id/btn_report"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="6dp"
+        android:background="@drawable/ic_report" />
+
+    <ImageView
+        android:id="@+id/imageview_liking_status"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignBottom="@+id/btn_report"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_blank_star_2" />
+
+</RelativeLayout>
