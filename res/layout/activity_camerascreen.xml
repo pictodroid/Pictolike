@@ -58,9 +58,10 @@
 
             <ImageView
                 android:id="@+id/btn_selfie"
-                android:layout_width="45dp"
+                android:layout_width="70dp"
                 android:layout_height="45dp"
                 android:layout_gravity="center"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_selfie_off" />
         </LinearLayout>
     </LinearLayout>

@@ -50,7 +50,13 @@ public class MySQLConnect {
 		run_command(cmd);
 	}
 
-
+    static public void signup(String name, String email, String password, String birthday, String gender, MySQLCommand.OnCompleteListener listener) {
+        SignupCommand cmd = new SignupCommand(name, email, password, birthday, gender);
+        if (listener != null)
+            cmd.setOnCompleteListener(listener);
+        run_command(cmd);
+    }
+    
 
 	
 	static public void savefile(String username,String filename, String datecreated, String locationcreated,  String deviceID, String userage, String gender, MySQLCommand.OnCompleteListener listener) {

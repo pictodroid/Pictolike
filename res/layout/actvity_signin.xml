@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.app.pictolike.SplashActivity"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    tools:context="com.app.pictolike.SplashActivity" >
 
     <ImageView
         android:id="@+id/landing_logo"
@@ -34,10 +34,10 @@
         android:background="@drawable/edittext_background_white"
         android:ems="10"
         android:hint="E-mail"
-        android:paddingLeft="5dp"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="10dp"
         android:textColor="#FBC261"
-        android:textColorHint="#FBC261" 
-        android:inputType="textEmailAddress">
+        android:textColorHint="#FBC261" >
 
         <requestFocus />
     </EditText>
@@ -53,19 +53,20 @@
         android:background="@drawable/edittext_background_white"
         android:ems="10"
         android:hint="Password"
-        android:paddingLeft="5dp"
-        android:textColor="#FBC261"
         android:inputType="textPassword"
+        android:paddingLeft="10dp"
+        android:textColor="#FBC261"
         android:textColorHint="#FBC261" />
 
-    <Button
+    <ImageView
         android:id="@+id/button_comein"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
         android:layout_below="@+id/password_edittext"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/come_in_selector" />
+        android:layout_marginTop="50dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/come_in_selector" />
 
     <ImageView
         android:id="@+id/btn_forgot_password"

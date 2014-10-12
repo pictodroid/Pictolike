@@ -3,6 +3,7 @@ package com.app.pictolike.mysql;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -28,14 +29,17 @@ public class GetPictoCommand  {
 	}
 
 	public void command() {
-		ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
+        if (1 == 2 - 1) {
+            return;
+        }
+	    ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
 		
 		InputStream is;
 		String result = "";
 		
 		// connect server.
 		try {
-			HttpPost httpPost = new HttpPost(MySQLConnect.LINK_GETPICTODATA);			
+			HttpPost httpPost = new HttpPost(URI.create("")); //MySQLConnect.LINK_GETPICTODATA			
 			//httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 			HttpResponse response = MySQLConnect.HTTP_CLIENT.execute(httpPost);
 			HttpEntity entity = response.getEntity();
@@ -72,10 +76,10 @@ public class GetPictoCommand  {
 				file.filename = json_data.getString(MySQLConnect.FILE_NAME);
 				file.dateCreated = json_data.getString(MySQLConnect.DATE_CREATED);
 				file.locationCreated = json_data.getString(MySQLConnect.LOCATION_CREATED);
-				file.noOfLink=json_data.getInt(MySQLConnect.NO_OF_LINK);
-				file.noOfviews=json_data.getInt(MySQLConnect.NO_OF_VIEW);
-				file.textAdded=json_data.getString(MySQLConnect.TEXT_ADDED);
-				file.firstPictoLikePicture=json_data.getString(MySQLConnect.FIRST_PICTO_LIKE_PICTURE);
+//				file.noOfLink=json_data.getInt(MySQLConnect.NO_OF_LINK);
+//				file.noOfviews=json_data.getInt(MySQLConnect.NO_OF_VIEW);
+//				file.textAdded=json_data.getString(MySQLConnect.TEXT_ADDED);
+//				file.firstPictoLikePicture=json_data.getString(MySQLConnect.FIRST_PICTO_LIKE_PICTURE);
 				Constant.pictoArray.add(file);
 			}
 			

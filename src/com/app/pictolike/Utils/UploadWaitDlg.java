@@ -90,7 +90,9 @@ public class UploadWaitDlg extends Dialog {
 			}
 			super.cancel();
 		} catch (Exception e) {
-			Log.e(TAG, "error", e);
+            if (AppConfig.DEBUG) {
+                Log.d(TAG, "cancel :: failed to cancel");
+            }
 		}
 	}
 
