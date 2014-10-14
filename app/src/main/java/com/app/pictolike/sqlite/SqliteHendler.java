@@ -37,12 +37,12 @@ public class SqliteHendler extends SQLiteOpenHelper{
 		{
 			ContentValues contentValues=new ContentValues();
 			contentValues.put("username", pictoArray.get(i).username);
-			contentValues.put("filename", pictoArray.get(i).username);
-			contentValues.put("datecreated", pictoArray.get(i).username);
-			contentValues.put("noOfLikes", pictoArray.get(i).username);
-			contentValues.put("noOfViews", pictoArray.get(i).username);
-			contentValues.put("text_added", pictoArray.get(i).username);
-			contentValues.put("firstpictolikepicture", pictoArray.get(i).username);
+			contentValues.put("filename", pictoArray.get(i).filename);
+			contentValues.put("datecreated", pictoArray.get(i).dateCreated);
+//			contentValues.put("noOfLikes", pictoArray.get(i).n);
+//			contentValues.put("noOfViews", pictoArray.get(i).username);
+//			contentValues.put("text_added", pictoArray.get(i).te);
+//			contentValues.put("firstpictolikepicture", pictoArray.get(i).username);
 			db.insert(TABLE_NAME, null, contentValues);
 			System.out.println("data insertewd//.//////");
 		}

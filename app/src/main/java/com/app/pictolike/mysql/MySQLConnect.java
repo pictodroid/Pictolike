@@ -19,9 +19,9 @@ public class MySQLConnect {
 	
 	public static HttpClient HTTP_CLIENT = new DefaultHttpClient(); 
 	
-	public static final String LINK_SIGNIN = "http://10.0.0.4:8888/signin.php";
-	public static final String LINK_SIGNUP = "http://10.0.0.4:8888/signup.php";
-	public static final String LINK_SENTFILE = "http:/10.0.0.4:8888/newfile.php";
+	public static final String LINK_SIGNIN = "http://192.168.1.81/signin.php";
+	public static final String LINK_SIGNUP = "http://192.168.1.81/signup.php";
+	public static final String LINK_SENTFILE = "http://192.168.1.81/newfile.php";
 	
 	public static final String USER_NAME = "username";
 	public static final String FIELD_NAME = "filename";

@@ -188,7 +188,7 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
             Toast.makeText(SignUpActivity.this, "Please Fill Email", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (SignUpEventHandler.EmailInputCheck(edtEmail.getText())) {
+        if (!SignUpEventHandler.EmailInputCheck(edtEmail.getText())) {
             Toast.makeText(SignUpActivity.this, "Wrong Input Email Address", Toast.LENGTH_SHORT)
                     .show();
             return false;
