@@ -28,7 +28,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class HomePageActivity extends Fragment {
+public class HomePageActivity extends Activity {
 
     static final int MIN_DISTANCE = 1;
     static final int IMAGE_MARGIN = 50;
@@ -59,12 +59,18 @@ public class HomePageActivity extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
-
-        setupViews(rootView);
-        return rootView;
+    protected void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setupViews();
     }
+
+    //    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
+//
+//        setupViews(rootView);
+//        return rootView;
+//    }
 
     void setImageOption() {
 
@@ -87,11 +93,11 @@ public class HomePageActivity extends Fragment {
                 .considerExifParams(true).displayer(new FadeInBitmapDisplayer(300)).build();
     }
 
-    public void setupViews(View rootView) {
+    public void setupViews() {
 
         // super.onCreate(savedInstanceState);
 
-        // setContentView(R.layout.activity_homepage);
+        setContentView(R.layout.activity_homepage);
 
         /**
          * Getting a instance of the action bar so that we can later play around
@@ -104,11 +110,11 @@ public class HomePageActivity extends Fragment {
         imageLoader = ImageLoader.getInstance();
         setImageOption();
 
-        likingStatus = (ImageView) rootView.findViewById(R.id.imageview_liking_status);
-        parentView = (RelativeLayout) rootView.findViewById(R.id.layoutview);
+        likingStatus = (ImageView) findViewById(R.id.imageview_liking_status);
+        parentView = (RelativeLayout) findViewById(R.id.layoutview);
 
         Point windowPoint = new Point();
-        getActivity().getWindowManager().getDefaultDisplay().getSize(windowPoint);
+        getWindowManager().getDefaultDisplay().getSize(windowPoint);
 
         windowwidth = windowPoint.x;
         windowheight = windowPoint.y;
@@ -118,7 +124,7 @@ public class HomePageActivity extends Fragment {
                 R.drawable.like_pic3, R.drawable.like_pic4 };
 
         for (int i = 0; i < Constant.pictoArray.size(); i++) {
-            final RelativeLayout myRelView = new RelativeLayout(getActivity());
+            final RelativeLayout myRelView = new RelativeLayout(this);
             myRelView.setLayoutParams(new LayoutParams((windowwidth - (IMAGE_MARGIN * 2)),
                     (int) (windowheight * 0.6)));
 
@@ -129,7 +135,7 @@ public class HomePageActivity extends Fragment {
             myRelView.setY(IMAGE_MARGIN);
             myRelView.setTag(i);
 
-            ImageView iv = new ImageView(getActivity());
+            ImageView iv = new ImageView(this);
 
             imageLoader.displayImage(Constant.pictoArray.get(i).filename, iv, options);
 
@@ -143,7 +149,7 @@ public class HomePageActivity extends Fragment {
             // myRelView.setBackground(rectShapeDrawable);
             myRelView.setBackgroundDrawable(rectShapeDrawable);
 
-            final Button imageLike = new Button(getActivity());
+            final Button imageLike = new Button(this);
             imageLike.setLayoutParams(new LayoutParams(100, 50));
             // imageLike.setBackground(getResources().getDrawable(
             // R.drawable.ic_like_pic));
@@ -152,7 +158,7 @@ public class HomePageActivity extends Fragment {
             imageLike.setAlpha(alphaValue);
             myRelView.addView(imageLike);
 
-            final Button imagePass = new Button(getActivity());
+            final Button imagePass = new Button(this);
             imagePass.setLayoutParams(new LayoutParams(100, 50));
             // imagePass.setBackground(getResources().getDrawable(
             // R.drawable.ic_skip_pic));
@@ -164,7 +170,7 @@ public class HomePageActivity extends Fragment {
 
             final float IMG_DETAIL_Y = (float) (windowheight * 0.55) - IMAGE_OFFSET;
 
-            TextView textTimeAgo = new TextView(getActivity());
+            TextView textTimeAgo = new TextView(this);
             textTimeAgo.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT));
             textTimeAgo.setText("?? minutes ago");
@@ -174,7 +180,7 @@ public class HomePageActivity extends Fragment {
             textTimeAgo.setTextColor(Color.rgb(237, 214, 167));
             myRelView.addView(textTimeAgo);
 
-            TextView textMilesAway = new TextView(getActivity());
+            TextView textMilesAway = new TextView(this);
             textMilesAway.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT));
             textMilesAway.setText("?? miles away");

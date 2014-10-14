@@ -52,8 +52,7 @@
         <activity
             android:name="com.app.pictolike.SignUpActivity"
             android:screenOrientation="portrait" >
-            <intent-filter android:label="@string/app_name" >
-            </intent-filter>
+
         </activity>
         
         <activity
