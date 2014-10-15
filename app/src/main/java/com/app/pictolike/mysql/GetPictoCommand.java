@@ -19,19 +19,20 @@ import com.app.pictolike.data.Constant;
 import com.app.pictolike.data.PictoFile;
 import com.app.pictolike.sqlite.SqliteHendler;
 
-public class GetPictoCommand  {
-	
-	
-	
-	public GetPictoCommand() {
+public class GetPictoCommand extends MySQLCommand  {
+
+
+
+
+    public GetPictoCommand() {
 		
 		
 	}
-
+    @Override
 	public void command() {
-        if (1 == 2 - 1) {
-            return;
-        }
+//        if (1 == 2 - 1) {
+//            return;
+//        }
 	    ArrayList<NameValuePair> nameValuePair = new ArrayList<NameValuePair>();
 		
 		InputStream is;
@@ -39,7 +40,7 @@ public class GetPictoCommand  {
 		
 		// connect server.
 		try {
-			HttpPost httpPost = new HttpPost(URI.create("")); //MySQLConnect.LINK_GETPICTODATA			
+			HttpPost httpPost = new HttpPost(URI.create(MySQLConnect.LINK_GET_HOME_IMAGES)); //MySQLConnect.LINK_GETPICTODATA
 			//httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 			HttpResponse response = MySQLConnect.HTTP_CLIENT.execute(httpPost);
 			HttpEntity entity = response.getEntity();
@@ -93,4 +94,5 @@ public class GetPictoCommand  {
 			return;
 		}
 	}
+
 }

@@ -3,6 +3,8 @@ package com.app.pictolike.mysql;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.net.URLEncoder;
+
 public class MySQLConnect {
 
 	public static final int CMD_SIGNIN = 1;
@@ -16,13 +18,16 @@ public class MySQLConnect {
 	public static final int ERR_USER_EXISTS = -3;
 	public static final int ERR_INSERT_FAILED = -4;
 	public static final int ERR_PARSE_FAILED = -5;
-	
-	public static HttpClient HTTP_CLIENT = new DefaultHttpClient(); 
+    private static final String BASE_URL = "http://192.168.1.81/";
+
+    public static HttpClient HTTP_CLIENT = new DefaultHttpClient();
 	
 	public static final String LINK_SIGNIN = "http://192.168.1.81/signin.php";
 	public static final String LINK_SIGNUP = "http://192.168.1.81/signup.php";
 	public static final String LINK_SENTFILE = "http://192.168.1.81/newfile.php";
-	
+	public static final String LINK_GET_HOME_IMAGES = "http://192.168.1.81/getPictoData.php";
+	public static final String LINK_PICT_DATA = "http://192.168.1.81/getPictoData.php";
+
 	public static final String USER_NAME = "username";
 	public static final String FIELD_NAME = "filename";
 	public static final String FIELD_EMAIL = "email";
@@ -59,7 +64,11 @@ public class MySQLConnect {
     }
     
 
-	
+	static public void getPictos( MySQLCommand.OnCompleteListener listener){
+        GetPictoCommand cmd = new GetPictoCommand();
+        cmd.setOnCompleteListener(listener);
+        run_command(cmd);
+    }
 	static public void savefile(String username,String filename, String datecreated, String locationcreated,  String deviceID, String userage, String gender,String filePath, MySQLCommand.OnCompleteListener listener) {
 		SaveFileCommand cmd = new SaveFileCommand(username,filename, datecreated, locationcreated, deviceID, userage, gender,filePath);
 		if (listener != null)
@@ -70,4 +79,8 @@ public class MySQLConnect {
 	static private void run_command(MySQLCommand cmd) {
 		new Thread(cmd).start();
 	}
+
+    public static String formatImageUrl(final String pFilename) {
+        return String.format("%s/getPicto.php?filename=%s",BASE_URL, pFilename.replaceAll(" ","%20"));
+    }
 }

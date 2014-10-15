@@ -20,6 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.pictolike.data.Constant;
+import com.app.pictolike.mysql.MySQLCommand;
+import com.app.pictolike.mysql.MySQLConnect;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -30,6 +32,9 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class HomePageActivity extends Fragment {
 
+    public HomePageActivity(){
+
+    }
     static final int MIN_DISTANCE = 1;
     static final int IMAGE_MARGIN = 50;
 
@@ -122,7 +127,21 @@ public class HomePageActivity extends Fragment {
 
         int[] myImageList = new int[] { R.drawable.like_pic, R.drawable.like_pic2,
                 R.drawable.like_pic3, R.drawable.like_pic4 };
+        loadPhotos();
+//        initPhotos();
+    }
 
+    private void loadPhotos() {
+        MySQLConnect.getPictos(new MySQLCommand.OnCompleteListener() {
+            @Override
+            public void OnComplete(final Object result) {
+                initPhotos();
+            }
+        });
+    }
+
+    private void initPhotos() {
+        parentView.removeAllViews();
         for (int i = 0; i < Constant.pictoArray.size(); i++) {
             final RelativeLayout myRelView = new RelativeLayout(getActivity());
             myRelView.setLayoutParams(new LayoutParams((windowwidth - (IMAGE_MARGIN * 2)),
@@ -137,7 +156,7 @@ public class HomePageActivity extends Fragment {
 
             ImageView iv = new ImageView(getActivity());
 
-            imageLoader.displayImage(Constant.pictoArray.get(i).filename, iv, options);
+            imageLoader.displayImage(MySQLConnect.formatImageUrl(Constant.pictoArray.get(i).filename), iv, options);
 
             final int IMAGE_OFFSET = 50;
 
