@@ -28,7 +28,7 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
-public class HomePageActivity extends Activity {
+public class HomePageActivity extends Fragment {
 
     static final int MIN_DISTANCE = 1;
     static final int IMAGE_MARGIN = 50;
@@ -58,19 +58,19 @@ public class HomePageActivity extends Activity {
         this.activity = activity;
     }
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setupViews();
-    }
-
-    //    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
-//
-//        setupViews(rootView);
-//        return rootView;
+//    @Override
+//    protected void onCreate(final Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setupViews();
 //    }
+
+        @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
+
+        setupViews(rootView);
+        return rootView;
+    }
 
     void setImageOption() {
 
@@ -93,11 +93,11 @@ public class HomePageActivity extends Activity {
                 .considerExifParams(true).displayer(new FadeInBitmapDisplayer(300)).build();
     }
 
-    public void setupViews() {
+    public void setupViews(View rootView) {
 
         // super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_homepage);
+//        setContentView(R.layout.activity_homepage);
 
         /**
          * Getting a instance of the action bar so that we can later play around
@@ -110,11 +110,11 @@ public class HomePageActivity extends Activity {
         imageLoader = ImageLoader.getInstance();
         setImageOption();
 
-        likingStatus = (ImageView) findViewById(R.id.imageview_liking_status);
-        parentView = (RelativeLayout) findViewById(R.id.layoutview);
+        likingStatus = (ImageView) rootView.findViewById(R.id.imageview_liking_status);
+        parentView = (RelativeLayout) rootView.findViewById(R.id.layoutview);
 
         Point windowPoint = new Point();
-        getWindowManager().getDefaultDisplay().getSize(windowPoint);
+        getActivity().getWindowManager().getDefaultDisplay().getSize(windowPoint);
 
         windowwidth = windowPoint.x;
         windowheight = windowPoint.y;
@@ -124,7 +124,7 @@ public class HomePageActivity extends Activity {
                 R.drawable.like_pic3, R.drawable.like_pic4 };
 
         for (int i = 0; i < Constant.pictoArray.size(); i++) {
-            final RelativeLayout myRelView = new RelativeLayout(this);
+            final RelativeLayout myRelView = new RelativeLayout(getActivity());
             myRelView.setLayoutParams(new LayoutParams((windowwidth - (IMAGE_MARGIN * 2)),
                     (int) (windowheight * 0.6)));
 
@@ -135,7 +135,7 @@ public class HomePageActivity extends Activity {
             myRelView.setY(IMAGE_MARGIN);
             myRelView.setTag(i);
 
-            ImageView iv = new ImageView(this);
+            ImageView iv = new ImageView(getActivity());
 
             imageLoader.displayImage(Constant.pictoArray.get(i).filename, iv, options);
 
@@ -149,7 +149,7 @@ public class HomePageActivity extends Activity {
             // myRelView.setBackground(rectShapeDrawable);
             myRelView.setBackgroundDrawable(rectShapeDrawable);
 
-            final Button imageLike = new Button(this);
+            final Button imageLike = new Button(getActivity());
             imageLike.setLayoutParams(new LayoutParams(100, 50));
             // imageLike.setBackground(getResources().getDrawable(
             // R.drawable.ic_like_pic));
@@ -158,7 +158,7 @@ public class HomePageActivity extends Activity {
             imageLike.setAlpha(alphaValue);
             myRelView.addView(imageLike);
 
-            final Button imagePass = new Button(this);
+            final Button imagePass = new Button(getActivity());
             imagePass.setLayoutParams(new LayoutParams(100, 50));
             // imagePass.setBackground(getResources().getDrawable(
             // R.drawable.ic_skip_pic));
@@ -170,7 +170,7 @@ public class HomePageActivity extends Activity {
 
             final float IMG_DETAIL_Y = (float) (windowheight * 0.55) - IMAGE_OFFSET;
 
-            TextView textTimeAgo = new TextView(this);
+            TextView textTimeAgo = new TextView(getActivity());
             textTimeAgo.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT));
             textTimeAgo.setText("?? minutes ago");
@@ -180,7 +180,7 @@ public class HomePageActivity extends Activity {
             textTimeAgo.setTextColor(Color.rgb(237, 214, 167));
             myRelView.addView(textTimeAgo);
 
-            TextView textMilesAway = new TextView(this);
+            TextView textMilesAway = new TextView(getActivity());
             textMilesAway.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
                     LayoutParams.WRAP_CONTENT));
             textMilesAway.setText("?? miles away");

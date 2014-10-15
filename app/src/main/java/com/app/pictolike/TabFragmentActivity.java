@@ -11,6 +11,9 @@ public class TabFragmentActivity extends AbstractAppActivity {
     // private ActionBar.Tab settingsTab;
 
     private CameraScreenFragment cameraScreen = new CameraScreenFragment();
+    private HomePageActivity homeScreen = new HomePageActivity(this);
+
+    private Tab homeTab;
 
     /* **************************************************************** */
     /* ******************* AbstractAppActivity ************************ */
@@ -31,14 +34,17 @@ public class TabFragmentActivity extends AbstractAppActivity {
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
         // Set Tab Icon and Titles
+        homeTab = actionBar.newTab().setIcon(R.drawable.ic_home_tab);
         cameraTab = actionBar.newTab().setIcon(R.drawable.ic_camera_tab);
         // settingsTab = actionBar.newTab().setIcon(R.drawable.ic_settings_tab);
 
         // Set Tab Listeners
+        homeTab.setTabListener(new TabListener(homeScreen));
         cameraTab.setTabListener(new TabListener(cameraScreen));
         // settingsTab.setTabListener(new TabListener(settingsScreen));
 
         // Add tabs to actionbar
+        actionBar.addTab(homeTab);
         actionBar.addTab(cameraTab);
         // actionBar.addTab(settingsTab);
     }

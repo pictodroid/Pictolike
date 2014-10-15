@@ -35,7 +35,10 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
 
         userName = (EditText) findViewById(R.id.email_edittext);
         userPassword = (EditText) findViewById(R.id.password_edittext);
-
+        if (BuildConfig.DEBUG){
+            userName.setText("test1");
+            userPassword.setText("test1");
+        }
         findViewById(R.id.button_comein).setOnClickListener(new OnClickListener() {
 
             @Override
