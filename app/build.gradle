@@ -17,11 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
 }
 
 dependencies {
     compile 'com.android.support:support-v4:19.1.0'
-    compile files('libs/android-directionalviewpager-1.2.0.jar')
-    compile files('libs/dynamic_grid.jar')
-    compile files('libs/universal-image-loader-1.9.2.jar')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
 }

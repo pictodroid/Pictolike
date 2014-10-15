@@ -323,7 +323,7 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
         String gender = "";
 
         MySQLConnect.savefile(username, filename, datecreated, locationcreated, deviceID, userage,
-                gender, new MySQLCommand.OnCompleteListener() {
+                gender,photoFile.file.getAbsolutePath(), new MySQLCommand.OnCompleteListener() {
 
                     @Override
                     public void OnComplete(Object result) {
@@ -389,6 +389,7 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
         PhotoFile photoFile = new PhotoFile();
         photoFile.timeStatmp = timeStamp;
         photoFile.fileName = fileName;
+        photoFile.file=mediaFile;
         photoFile.photoFile = mediaFile;
 
         return photoFile;
@@ -399,6 +400,7 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
         public String timeStatmp;
         public String fileName;
         public File photoFile;
+        public File file;
     }
 
 }

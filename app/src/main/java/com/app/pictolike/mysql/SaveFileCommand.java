@@ -1,6 +1,7 @@
 package com.app.pictolike.mysql;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -10,6 +11,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,11 +29,12 @@ class SaveFileCommand extends MySQLCommand {
 	String m_strDeviceID;
 	String m_strUsrAge;
 	String m_strUsrGender;
-	String m_strimg221B;
+    private String mFilePath;
+    String m_strimg221B;
 	
 
 	
-	SaveFileCommand(String username,String filename, String datecreated,String locationcreated , String deviceID, String userage, String gender) {
+	SaveFileCommand(String username,String filename, String datecreated,String locationcreated , String deviceID, String userage, String gender,String filePath) {
 		m_strUserName = username;
 		m_strFileName = filename;
 		m_strDateCreated=datecreated;
@@ -37,7 +42,8 @@ class SaveFileCommand extends MySQLCommand {
 		m_strDeviceID=deviceID;
 	    m_strUsrAge=userage;
 		m_strUsrGender=gender;
-		//m_strimg221B= img221B; //for now initiallize to zero
+        mFilePath = filePath;
+        //m_strimg221B= img221B; //for now initiallize to zero
 		m_strimg221B = "";
 		
 	}
@@ -50,17 +56,30 @@ class SaveFileCommand extends MySQLCommand {
 		
 		// connect server.
 		try {
-			HttpPost httpPost = new HttpPost(MySQLConnect.LINK_SENTFILE);
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USER_NAME, m_strUserName));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_NAME, m_strFileName));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.DATE_CREATED, m_strDateCreated));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.LOCATION_CREATED, m_strLocationCreated));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.DEVICEID, m_strDeviceID));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USERAGE, m_strUsrAge));
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.IMG221, m_strimg221B));
+//            Multipar
+            MultipartEntity lMultipartEntity = new MultipartEntity();
+            lMultipartEntity.addPart(MySQLConnect.USER_NAME,new StringBody(m_strUserName));
+            lMultipartEntity.addPart(MySQLConnect.DATE_CREATED,new StringBody(m_strFileName));
+            lMultipartEntity.addPart(MySQLConnect.FIELD_NAME,new StringBody(m_strDateCreated));
+            lMultipartEntity.addPart(MySQLConnect.DEVICEID,new StringBody(m_strDeviceID));
+            lMultipartEntity.addPart(MySQLConnect.USERAGE,new StringBody(m_strUsrAge));
+            lMultipartEntity.addPart(MySQLConnect.LOCATION_CREATED,new StringBody(m_strLocationCreated));
+            lMultipartEntity.addPart(MySQLConnect.FILE_CONTENT,new FileBody(new File(mFilePath)));
+
+
+
+            HttpPost httpPost = new HttpPost(MySQLConnect.LINK_SENTFILE);
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USER_NAME, m_strUserName));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_NAME, m_strFileName));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.DATE_CREATED, m_strDateCreated));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.LOCATION_CREATED, m_strLocationCreated));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.DEVICEID, m_strDeviceID));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.DEVICEID, m_strDeviceID));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USERAGE, m_strUsrAge));
+//			nameValuePair.add(new BasicNameValuePair(MySQLConnect.IMG221, m_strimg221B));
+//
 			
-			
-			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
+			httpPost.setEntity(lMultipartEntity);
 			HttpResponse response = MySQLConnect.HTTP_CLIENT.execute(httpPost);
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
