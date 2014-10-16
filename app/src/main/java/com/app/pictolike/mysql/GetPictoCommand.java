@@ -9,15 +9,12 @@ import java.util.ArrayList;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.app.pictolike.data.Constant;
 import com.app.pictolike.data.PictoFile;
-import com.app.pictolike.sqlite.SqliteHendler;
 
 public class GetPictoCommand extends MySQLCommand  {
 

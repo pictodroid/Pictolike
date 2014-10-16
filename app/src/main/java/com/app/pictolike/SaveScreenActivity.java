@@ -25,7 +25,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.pictolike.data.Constant;
+import com.app.pictolike.data.PictoFile;
 import com.app.pictolike.data.ProfileItem;
+import com.app.pictolike.helpers.ImageLoaderHelper;
+import com.app.pictolike.mysql.MySQLConnect;
+import com.app.pictolike.sqlite.SqliteHandler;
 
 public class SaveScreenActivity extends Fragment {
 
@@ -36,13 +41,19 @@ public class SaveScreenActivity extends Fragment {
 	private GridDynamicAdapter mAdapter;
 	private boolean stopLoadingData;
 	private LinearLayout progressLayout;
-	private ArrayList<String> list;
+	private ArrayList<PictoFile> list;
 	private int itemCount = 24;
 	
 	
 	private boolean dragEnabled = false;
 
-	@Override
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSqliteHandler = new SqliteHandler(getActivity());
+    }
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.activity_savescreen,
@@ -68,7 +79,7 @@ public class SaveScreenActivity extends Fragment {
 	// final int profileCount = 126;
 	// runProfileCounter(profileCount);
 	// }
-
+    private SqliteHandler mSqliteHandler;
 	private void setupViews(final View rootView) {
 		// setContentView(R.layout.activity_profile);
 		/** Code to change Action Bar Color */
@@ -76,14 +87,8 @@ public class SaveScreenActivity extends Fragment {
 		// ColorDrawable cd = new ColorDrawable(0xFFFBAC00);
 		// bar.setBackgroundDrawable(cd);
 
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("Grid1");
-		list.add("Grid2");
-		list.add("Grid3");
-		list.add("Grid4");
-		list.add("Grid5");
-		list.add("Grid6");
-		list.add("Grid7");
+		List<PictoFile> list = mSqliteHandler.loadSavedPictos();
+
 
 		mAdapter = new GridDynamicAdapter(getActivity(), list, 2);
 		mGridView = (DynamicGridView) rootView
@@ -293,8 +298,6 @@ public class SaveScreenActivity extends Fragment {
 		@Override
 		protected void onPostExecute(Void result) {
 			int currentPosition = mGridView.getFirstVisiblePosition();
-			list.add("Grid1");
-			list.add("Grid2");
 			// pass ArrayList data here...
 			mAdapter = new GridDynamicAdapter(getActivity(), list, 2);
 			mGridView.setAdapter(mAdapter);
@@ -316,7 +319,7 @@ public class SaveScreenActivity extends Fragment {
 	}
 
 	public class GridDynamicAdapter extends BaseDynamicGridAdapter {
-		public GridDynamicAdapter(Context context, List<?> items,
+		public GridDynamicAdapter(Context context, List<PictoFile> items,
 				int columnCount) {
 			super(context, items, columnCount);
 		}
@@ -332,7 +335,7 @@ public class SaveScreenActivity extends Fragment {
 			} else {
 				holder = (GridViewHolder) convertView.getTag();
 			}
-			holder.build(getItem(position).toString());
+			holder.build((PictoFile) getItem(position));
 			return convertView;
 		}
 
@@ -349,6 +352,14 @@ public class SaveScreenActivity extends Fragment {
 				titleText.setText(title);
 				image.setImageResource(R.drawable.like_pic);
 			}
-		}
+
+            public void build(final PictoFile pItem) {
+                titleText.setText(pItem.filename);
+                new ImageLoaderHelper(getActivity()).displayImage(MySQLConnect.formatImageUrl(pItem.filename), image);
+//                imageLoader.displayImage(MySQLConnect.formatImageUrl(pItem.filename), iv, options);
+//                image.setImageResource(R.drawable.like_pic);
+
+            }
+        }
 	}
 }

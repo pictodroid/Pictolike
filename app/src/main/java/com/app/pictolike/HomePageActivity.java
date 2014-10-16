@@ -20,8 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.pictolike.data.Constant;
+import com.app.pictolike.data.PictoFile;
+import com.app.pictolike.helpers.ImageLoaderHelper;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
+import com.app.pictolike.sqlite.SqliteHandler;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,6 +34,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class HomePageActivity extends Fragment {
+
+    private OnTouchListener mPictoMoveListener;
 
     public HomePageActivity(){
 
@@ -42,7 +47,7 @@ public class HomePageActivity extends Fragment {
     float downYValue;
     float alphaValue = 0;
     float imageItemX, imageItemY;
-    ImageLoader imageLoader;
+
     int windowwidth;
     int windowheight;
     DisplayImageOptions options;
@@ -58,7 +63,7 @@ public class HomePageActivity extends Fragment {
     private RelativeLayout parentView;
     private ImageView likingStatus;
     Activity activity;
-
+    private SqliteHandler mSqliteHandler;
     public HomePageActivity(Activity activity) {
         this.activity = activity;
     }
@@ -69,7 +74,14 @@ public class HomePageActivity extends Fragment {
 //        setupViews();
 //    }
 
-        @Override
+
+    @Override
+    public void onCreate(final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mSqliteHandler = new SqliteHandler(getActivity());
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
 
@@ -77,26 +89,6 @@ public class HomePageActivity extends Fragment {
         return rootView;
     }
 
-    void setImageOption() {
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                activity.getApplicationContext()).threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .diskCacheSize(50 * 1024 * 1024) // 50 Mb
-                .tasksProcessingOrder(QueueProcessingType.LIFO).writeDebugLogs() // Remove
-                                                                                 // for
-                                                                                 // release
-                                                                                 // app
-                .build();
-
-        imageLoader.init(config);
-
-        options = new DisplayImageOptions.Builder().showImageForEmptyUri(R.drawable.ic_empty)
-                .resetViewBeforeLoading(true).cacheOnDisk(true)
-                .imageScaleType(ImageScaleType.EXACTLY).bitmapConfig(Bitmap.Config.RGB_565)
-                .considerExifParams(true).displayer(new FadeInBitmapDisplayer(300)).build();
-    }
 
     public void setupViews(View rootView) {
 
@@ -112,9 +104,6 @@ public class HomePageActivity extends Fragment {
         //
         // ColorDrawable cd = new ColorDrawable(0xFFFBAC00);
         // bar.setBackgroundDrawable(cd);
-        imageLoader = ImageLoader.getInstance();
-        setImageOption();
-
         likingStatus = (ImageView) rootView.findViewById(R.id.imageview_liking_status);
         parentView = (RelativeLayout) rootView.findViewById(R.id.layoutview);
 
@@ -156,7 +145,7 @@ public class HomePageActivity extends Fragment {
 
             ImageView iv = new ImageView(getActivity());
 
-            imageLoader.displayImage(MySQLConnect.formatImageUrl(Constant.pictoArray.get(i).filename), iv, options);
+            new ImageLoaderHelper(getActivity()).displayImage(MySQLConnect.formatImageUrl(Constant.pictoArray.get(i).filename), iv);
 
             final int IMAGE_OFFSET = 50;
 
@@ -209,116 +198,135 @@ public class HomePageActivity extends Fragment {
             textMilesAway.setTextColor(Color.rgb(237, 214, 167));
             myRelView.addView(textMilesAway);
 
-            myRelView.setOnTouchListener(new OnTouchListener() {
+            myRelView.setOnTouchListener(new PictoViewTouchListener(myRelView, imagePass, imageLike,Constant.pictoArray.get(i)));
 
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    int dir = -1;
+            parentView.addView(myRelView);
+        }
+    }
 
-                    switch (event.getAction() & MotionEvent.ACTION_MASK) {
-                    case MotionEvent.ACTION_POINTER_DOWN:
-                        Log.d("TEST", "moving ..... ");
-                        break;
-                    case MotionEvent.ACTION_DOWN: {
-                        x_cord = (int) event.getRawX();
-                        y_cord = (int) event.getRawY();
-                        dir = y_cord > windowheight / 2 ? -1 : 1;
-                        break;
-                    }
-                    case MotionEvent.ACTION_MOVE: {
-                        float iX = (x_cord - event.getRawX());
-                        float iY = (y_cord - event.getRawY());
+    private class PictoViewTouchListener implements OnTouchListener {
 
-                        x_cord = (int) event.getRawX();
-                        y_cord = (int) event.getRawY();
+        private final RelativeLayout mMyRelView;
+        private final Button mImagePass;
+        private final Button mImageLike;
+        private final PictoFile mPictoFile;
 
-                        myRelView.setX(myRelView.getX() - iX);
-                        myRelView.setY(myRelView.getY() - iY);
-                        boolean isSwipedDown = y_cord > (windowheight * .85);
+        public PictoViewTouchListener(final RelativeLayout pMyRelView, final Button pImagePass, final Button pImageLike, final PictoFile pPictoFile) {
+            mMyRelView = pMyRelView;
+            mImagePass = pImagePass;
+            mImageLike = pImageLike;
+            mPictoFile = pPictoFile;
+        }
 
-                        if (isSwipedDown) {
-                            likingStatus.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.ic_poker_face));
-                            // imagePass.setAlpha(1);
-                            // imageLike.setAlpha(0);
-                            Likes = 0;
-                        } else if (x_cord > (screenCenter + (screenCenter / 2))) {
-                            // imageLike.setAlpha(1);
-                            likingStatus.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.ic_smiley_face));
-                            if (x_cord > (windowwidth - (screenCenter / 4))) {
-                                Likes = 1;
-                                saveSignal = true; // swipe to left is to save
-                                                   // and like
-                            } else {
-                                Likes = 0;
-                            }
-                        } else if (x_cord < (screenCenter / 2)) {
-                            // imagePass.setAlpha(1);
-                            likingStatus.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.ic_smiley_face)); // HOME task 15
-                            if (x_cord < screenCenter / 4) {
-                                Likes = 1;
-                            } else {
-                                Likes = 0;
-                            }
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            int dir = -1;
+
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    Log.d("TEST", "moving ..... ");
+                    break;
+                case MotionEvent.ACTION_DOWN: {
+                    x_cord = (int) event.getRawX();
+                    y_cord = (int) event.getRawY();
+                    dir = y_cord > windowheight / 2 ? -1 : 1;
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE: {
+                    float iX = (x_cord - event.getRawX());
+                    float iY = (y_cord - event.getRawY());
+
+                    x_cord = (int) event.getRawX();
+                    y_cord = (int) event.getRawY();
+
+                    mMyRelView.setX(mMyRelView.getX() - iX);
+                    mMyRelView.setY(mMyRelView.getY() - iY);
+                    boolean isSwipedDown = y_cord > (windowheight * .85);
+
+                    if (isSwipedDown) {
+                        likingStatus.setImageDrawable(getResources().getDrawable(
+                                R.drawable.ic_poker_face));
+                        // imagePass.setAlpha(1);
+                        // imageLike.setAlpha(0);
+                        Likes = 0;
+                    } else if (x_cord > (screenCenter + (screenCenter / 2))) {
+                        // imageLike.setAlpha(1);
+                        likingStatus.setImageDrawable(getResources().getDrawable(
+                                R.drawable.ic_smiley_face));
+                        if (x_cord > (windowwidth - (screenCenter / 4))) {
+                            Likes = 1;
+                            saveSignal = true; // swipe to left is to save
+                            // and like
                         } else {
                             Likes = 0;
-                            imagePass.setAlpha(0);
-                            imageLike.setAlpha(0);
-                            likingStatus.setImageDrawable(getResources().getDrawable(
-                                    R.drawable.ic_blank_star_2));
-
                         }
-
-                        if (!(iX == 0)) {
-                            myRelView.setRotation((float) ((x_cord - screenCenter)
-                                    * (Math.PI / 100) * dir));
+                    } else if (x_cord < (screenCenter / 2)) {
+                        // imagePass.setAlpha(1);
+                        likingStatus.setImageDrawable(getResources().getDrawable(
+                                R.drawable.ic_smiley_face)); // HOME task 15
+                        if (x_cord < screenCenter / 4) {
+                            Likes = 1;
+                        } else {
+                            Likes = 0;
                         }
-                        break;
-                    }
-
-                    case MotionEvent.ACTION_UP:
-                        imageItemX = ((int) myRelView.getX());
-                        imageItemY = ((int) myRelView.getY());
-                        tempX = imageItemX;
-                        myRelView.setRotation(0);
-                        imagePass.setAlpha(0);
-                        imageLike.setAlpha(0);
-
+                    } else {
+                        Likes = 0;
+                        mImagePass.setAlpha(0);
+                        mImageLike.setAlpha(0);
                         likingStatus.setImageDrawable(getResources().getDrawable(
                                 R.drawable.ic_blank_star_2));
 
-                        if (myRelView.getX() == IMAGE_MARGIN && myRelView.getY() == IMAGE_MARGIN) {
-                            // showImageCaptionDialog(); //HOMEtask13
-                            break;
-                        }
+                    }
 
-                        myRelView.setX(IMAGE_MARGIN);
-                        myRelView.setY(IMAGE_MARGIN);
+                    if (!(iX == 0)) {
+                        mMyRelView.setRotation((float) ((x_cord - screenCenter)
+                                * (Math.PI / 100) * dir));
+                    }
+                    break;
+                }
 
-                        if (Likes == 0) {
-                            Log.e("Event Status", "Skipped"); // nothing changed
-                                                              // to Skipped
-                            myRelView.setX(IMAGE_MARGIN);
-                            myRelView.setY(IMAGE_MARGIN);
-                            myRelView.setRotation(0);
-                        } else if ((Likes == 1) & (saveSignal == false)) {
-                            Log.e("Event Status", "Liked");
-                            parentView.removeView(myRelView);
-                        } else if ((Likes == 1) & (saveSignal == true)) {
-                            Log.e("Event Status", "Saved");
-                            parentView.removeView(myRelView);
-                        }
-                        break;
-                    default:
+                case MotionEvent.ACTION_UP:
+                    imageItemX = ((int) mMyRelView.getX());
+                    imageItemY = ((int) mMyRelView.getY());
+                    tempX = imageItemX;
+                    mMyRelView.setRotation(0);
+                    mImagePass.setAlpha(0);
+                    mImageLike.setAlpha(0);
+
+                    likingStatus.setImageDrawable(getResources().getDrawable(
+                            R.drawable.ic_blank_star_2));
+
+                    if (mMyRelView.getX() == IMAGE_MARGIN && mMyRelView.getY() == IMAGE_MARGIN) {
+                        // showImageCaptionDialog(); //HOMEtask13
                         break;
                     }
-                    return true;
-                }
-            });
 
-            parentView.addView(myRelView);
+                    mMyRelView.setX(IMAGE_MARGIN);
+                    mMyRelView.setY(IMAGE_MARGIN);
+
+                    if (Likes == 0) {
+                        Log.e("Event Status", "Skipped"); // nothing changed
+                        // to Skipped
+                        mMyRelView.setX(IMAGE_MARGIN);
+                        mMyRelView.setY(IMAGE_MARGIN);
+                        mMyRelView.setRotation(0);
+
+                    } else if ((Likes == 1) & (saveSignal == false)) {
+                        Log.e("Event Status", "Liked");
+                        parentView.removeView(mMyRelView);
+                        mPictoFile.like();
+                    } else if ((Likes == 1) & (saveSignal == true)) {
+                        Log.e("Event Status", "Saved");
+                        parentView.removeView(mMyRelView);
+
+                        mPictoFile.like();
+                        mSqliteHandler.savePicto(mPictoFile);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return true;
         }
     }
 

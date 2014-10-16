@@ -6,4 +6,9 @@ public class PictoFile {
 	public String dateCreated;
 	public String locationCreated;
 	public String img221B;
+	public long noOfLikes;
+	public long noOfViews;
+    public void like(){
+        noOfLikes+=1;
+    }
 }

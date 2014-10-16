@@ -2,6 +2,7 @@ package com.app.pictolike;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
@@ -12,9 +13,11 @@ public class TabFragmentActivity extends AbstractAppActivity {
 
     private CameraScreenFragment cameraScreen = new CameraScreenFragment();
     private HomePageActivity homeScreen = new HomePageActivity(this);
+    private SaveScreenActivity settingsScreen = new SaveScreenActivity();
 
     private Tab homeTab;
 
+    private Tab settingsTab;
     /* **************************************************************** */
     /* ******************* AbstractAppActivity ************************ */
     /* **************************************************************** */
@@ -36,17 +39,17 @@ public class TabFragmentActivity extends AbstractAppActivity {
         // Set Tab Icon and Titles
         homeTab = actionBar.newTab().setIcon(R.drawable.ic_home_tab);
         cameraTab = actionBar.newTab().setIcon(R.drawable.ic_camera_tab);
-        // settingsTab = actionBar.newTab().setIcon(R.drawable.ic_settings_tab);
+        settingsTab = actionBar.newTab().setIcon(R.drawable.ic_settings_tab);
 
         // Set Tab Listeners
         homeTab.setTabListener(new TabListener(homeScreen));
         cameraTab.setTabListener(new TabListener(cameraScreen));
-        // settingsTab.setTabListener(new TabListener(settingsScreen));
+        settingsTab.setTabListener(new TabListener(settingsScreen));
 
         // Add tabs to actionbar
         actionBar.addTab(homeTab);
         actionBar.addTab(cameraTab);
-        // actionBar.addTab(settingsTab);
+        actionBar.addTab(settingsTab);
     }
 
     /* **************************************************************** */
