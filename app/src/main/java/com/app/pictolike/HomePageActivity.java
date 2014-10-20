@@ -2,12 +2,13 @@ package com.app.pictolike;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.Bitmap;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,13 +27,7 @@ import com.app.pictolike.helpers.ImageLoaderHelper;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
 import com.app.pictolike.sqlite.SqliteHandler;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 public class HomePageActivity extends Fragment {
 
@@ -106,7 +102,6 @@ public class HomePageActivity extends Fragment {
         // bar.setBackgroundDrawable(cd);
         likingStatus = (ImageView) rootView.findViewById(R.id.imageview_liking_status);
         parentView = (RelativeLayout) rootView.findViewById(R.id.layoutview);
-
         Point windowPoint = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(windowPoint);
 
@@ -127,6 +122,17 @@ public class HomePageActivity extends Fragment {
                 initPhotos();
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        if(!SharedpreferenceUtility.getInstance(getActivity()).getBoolean(Constant.HOMEFIRSTLAUNCH)){
+            parentView.setBackgroundResource(R.drawable.welcome);
+            SharedpreferenceUtility.getInstance(getActivity()).putBoolean(Constant.HOMEFIRSTLAUNCH,true);
+        }else{
+            parentView.setBackground(null);
+        }
+        super.onResume();
     }
 
     private void initPhotos() {
@@ -201,6 +207,21 @@ public class HomePageActivity extends Fragment {
             myRelView.setOnTouchListener(new PictoViewTouchListener(myRelView, imagePass, imageLike,Constant.pictoArray.get(i)));
 
             parentView.addView(myRelView);
+        }
+    }
+    private PopupWindow pwindo;
+
+    private void initiatePopupWindow() {
+        try {
+// We need to get the instance of the LayoutInflater
+            LayoutInflater inflater = (LayoutInflater) getActivity()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.home_hint_dialog,
+                    null);
+            pwindo = new PopupWindow(layout, 300, 370, true);
+            pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

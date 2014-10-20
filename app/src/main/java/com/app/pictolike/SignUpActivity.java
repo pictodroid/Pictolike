@@ -1,12 +1,8 @@
 package com.app.pictolike;
 
-import java.util.Calendar;
-import java.util.Scanner;
-
 import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,11 +15,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.pictolike.Utils.AppConfig;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
+
+import java.util.Calendar;
+import java.util.Scanner;
 
 public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.OnCompleteListener {
 
@@ -33,7 +33,7 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
     private EditText edtEmail;
     private EditText edtPassword;
     private EditText edtBirthday;
-
+    private RelativeLayout mTopLyt;
     private ImageView maleGenButton;
     private ImageView femaleGenButton;
 
@@ -65,7 +65,17 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         edtEmail = (EditText) findViewById(R.id.reg_email_edittext);
         edtPassword = (EditText) findViewById(R.id.reg_password_edittext);
         edtBirthday = (EditText) findViewById(R.id.reg_birthday_edittext);
-
+        mTopLyt =(RelativeLayout) findViewById(R.id.lytmain);
+        mTopLyt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getCurrentFocus()!=null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+                // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            }
+        });
         findViewById(R.id.reg_birthday_edittext_invisible_click_watcher).setOnClickListener(
                 new OnClickListener() {
 

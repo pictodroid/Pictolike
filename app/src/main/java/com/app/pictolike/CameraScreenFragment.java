@@ -1,12 +1,5 @@
 package com.app.pictolike;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
@@ -31,6 +24,13 @@ import com.app.pictolike.Utils.LocationMgr;
 import com.app.pictolike.Utils.UploadWaitDlg;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @SuppressLint("InlinedApi")
 public class CameraScreenFragment extends Fragment implements SurfaceHolder.Callback {
@@ -60,11 +60,11 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
                 return;
             }
 
-            String title = "Upload";
-            String msg = "Do you really want to upload?";
+            String title = "Upload?";
+            String msg = "";
 
             ConfirmDlg confirmlDlg = new ConfirmDlg(CameraScreenFragment.this.getActivity(), title,
-                    msg);
+                    null);
             confirmlDlg.setButtonText("Yes", "No");
             confirmlDlg.setConfirmListener(new ConfirmDlg.ConfirmListener() {
 
@@ -87,7 +87,7 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
                 fos.write(data);
                 fos.close();
                 Toast.makeText(getActivity(),
-                        "Image Saved : " + photoFile.photoFile.getAbsolutePath(), Toast.LENGTH_LONG)
+                        "Image saved to phone" , Toast.LENGTH_LONG)
                         .show();
             } catch (FileNotFoundException e) {
                 if (AppConfig.DEBUG) {
@@ -174,7 +174,6 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
     private void setupViews(View rootView) {
         locview = (ImageView) rootView.findViewById(R.id.locview);
         locview.setVisibility(View.INVISIBLE);
-
         /** Mapping the capture and flip button from the xml */
         captureButton = (ImageView) rootView.findViewById(R.id.captureButton);
         flipButton = (ImageView) rootView.findViewById(R.id.btn_selfie);
@@ -338,10 +337,24 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
      * callback to the camera api
      */
     private void captureImage() {
+       // locview.setVisibility(View.GONE);
         if (camera == null)
             return;
 
         camera.takePicture(null, null, pictureBack);
+    }
+
+    @Override
+    public void onResume() {
+       /* if(!SharedpreferenceUtility.getInstance(getActivity()).getBoolean(Constant.CAMERAFIRSTLAUNCH)){
+            locview.setBackgroundResource(R.drawable.camera_activation);
+            SharedpreferenceUtility.getInstance(getActivity()).putBoolean(Constant.CAMERAFIRSTLAUNCH,true);
+        }else{
+            surfaceView.setVisibility(View.VISIBLE);
+            locview.setVisibility(View.GONE);
+            locview.setBackground(null);
+        }*/
+        super.onResume();
     }
 
     private void reconnectCamera(final Camera camera) {

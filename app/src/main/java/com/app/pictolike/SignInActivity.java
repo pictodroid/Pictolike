@@ -7,7 +7,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.app.pictolike.Utils.AppConfig;
@@ -20,7 +22,7 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
     public static String userNameString;
     private EditText userName;
     private EditText userPassword;
-
+    private RelativeLayout mTopLyt;
     /* **************************************************************** */
     /* ******************* AbstractAppActivity ************************ */
     /* **************************************************************** */
@@ -35,6 +37,17 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
 
         userName = (EditText) findViewById(R.id.email_edittext);
         userPassword = (EditText) findViewById(R.id.password_edittext);
+        mTopLyt =(RelativeLayout) findViewById(R.id.click_lyt);
+        mTopLyt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(getCurrentFocus()!=null) {
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                }
+               // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            }
+        });
         if (BuildConfig.DEBUG){
             userName.setText("test1");
             userPassword.setText("test1");
@@ -43,7 +56,10 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
 
             @Override
             public void onClick(View v) {
-                onSignIn();
+                Intent intent = new Intent(SignInActivity.this, TabFragmentActivity.class);
+                startActivity(intent);
+                finish();
+               /* onSignIn();*/
             }
         });
 

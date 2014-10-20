@@ -19,7 +19,7 @@ import com.app.pictolike.Utils.AppConfig;
 public class SplashActivity extends AbstractAppActivity {
 
     // Splash Screen timeout interval
-    private static int SPLASH_TIME_OUT = 2000;
+    private static int SPLASH_TIME_OUT = 1700;
     private static final int FRAME_TIME_OUT = 50;
     private ImageView splashImageView;
     private AnimationDrawable anim;
@@ -31,7 +31,7 @@ public class SplashActivity extends AbstractAppActivity {
         public void handleMessage(Message msg) {
             Animation mAnim = AnimationUtils.loadAnimation(SplashActivity.this,
                     android.R.anim.fade_out);
-            mAnim.setDuration(3700);
+            mAnim.setDuration(1700);
             mAnim.setRepeatCount(0);
             mAnim.setAnimationListener(new AnimationListener() {
 

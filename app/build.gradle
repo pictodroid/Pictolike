@@ -7,8 +7,8 @@ android {
     defaultConfig {
         applicationId "com.app.pictolike"
         minSdkVersion 15
-        maxSdkVersion 21
-        targetSdkVersion 20
+        maxSdkVersion 19
+        targetSdkVersion 19
     }
 
     buildTypes {
@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    lintOptions{
+        abortOnError false
+    }
     packagingOptions {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -24,7 +27,8 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:support-v13:20.0.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
+    compile 'com.android.support:support-v4:19.0.1'
+    compile 'com.android.support:support-v13:19.0.1'
 }
+

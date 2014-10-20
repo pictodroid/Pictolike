@@ -1,0 +1,140 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+    <LinearLayout
+        android:id="@+id/firstLay"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip" >
+
+        <TextView
+            android:id="@+id/primary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txtPrimary"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+   <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@android:color/holo_orange_light" />
+
+    <LinearLayout
+        android:id="@+id/saveLay"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/setPrimary"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txtSetPrimary"
+            android:textColor="@android:color/holo_orange_light" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:singleLine="true"
+        android:inputType="textEmailAddress"
+        android:hint="@string/Email"
+        >
+    </EditText>
+
+         <!--<LinearLayout
+           android:id="@+id/emailLay"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:gravity="center_vertical"
+           android:orientation="horizontal"
+           android:weightSum="2" >
+
+           <EditText
+               android:id="@+id/edMail"
+               android:layout_width="100dip"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:layout_weight="2"
+               android:singleLine="true"
+               android:hint="Email"
+               android:inputType="textEmailAddress">
+           </EditText>
+
+          <TextView
+               android:id="@+id/setAdd"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:text="@string/txtAdd"
+               android:textColor="@android:color/black" />
+
+           <NumberPicker
+               android:id="@+id/npEmail"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_weight="1" />
+
+           <TextView
+               android:id="@+id/setedu"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center_vertical"
+               android:text="@string/txtEdu"
+               android:textColor="@android:color/black" />
+       </LinearLayout>-->
+
+
+        <!--<View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="@android:color/holo_orange_light" />-->
+
+        <LinearLayout
+            android:id="@+id/bottomLay"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <TextView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="@string/txtCancel"
+                android:textColor="@android:color/holo_orange_light" >
+            </TextView>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:background="@android:color/holo_orange_light" />
+
+            <TextView
+                android:id="@+id/set"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="@string/txtSet"
+                android:textColor="@android:color/holo_orange_light" >
+            </TextView>
+        </LinearLayout>
+
+    </LinearLayout>

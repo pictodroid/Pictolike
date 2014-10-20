@@ -3,7 +3,11 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white" >
-
+    <RelativeLayout
+        android:id="@+id/lytmain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@android:color/white" >
     <LinearLayout
         android:id="@+id/SignUpActivtiy"
         android:layout_width="fill_parent"
@@ -29,6 +33,7 @@
             android:layout_weight="1"
             android:background="@drawable/edittext_background_white"
             android:ems="10"
+            android:imeOptions="actionNext"
             android:hint="E-mail"
             android:inputType="textEmailAddress"
             android:paddingLeft="10dp"
@@ -45,6 +50,7 @@
             android:layout_weight="1"
             android:background="@drawable/edittext_background_white"
             android:ems="10"
+            android:imeOptions="actionNext"
             android:hint="Password"
             android:inputType="textPassword"
             android:paddingLeft="10dp"
@@ -65,6 +71,7 @@
                 android:layout_height="40dp"
                 android:background="@drawable/edittext_background_white"
                 android:ems="10"
+                android:imeOptions="actionDone"
                 android:enabled="false"
                 android:hint="Birthday"
                 android:inputType="date"
@@ -114,5 +121,5 @@
             android:scaleType="fitCenter"
             android:src="@drawable/happy_pictoliking_selector" />
     </LinearLayout>
-
+    </RelativeLayout>
 </RelativeLayout>

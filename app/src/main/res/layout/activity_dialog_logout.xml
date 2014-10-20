@@ -1,0 +1,153 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="10dip" >
+
+    <LinearLayout
+        android:id="@+id/firstLay"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip" >
+
+        <TextView
+            android:id="@+id/goal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txtOurGoal"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@android:color/holo_orange_light" />
+
+    <LinearLayout
+        android:id="@+id/saveLay"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/yourschool"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txtYourSchool"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/bottomLay"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <EditText
+                android:id="@+id/edYourstud"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:singleLine="true" >
+            </EditText>
+
+            <TextView
+                android:id="@+id/txtstud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="@string/txtStudent"
+                android:textColor="@android:color/holo_orange_light" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@android:color/holo_orange_light" />
+
+    <LinearLayout
+        android:id="@+id/saveLay"
+        android:layout_width="fill_parent"
+        android:layout_height="100dip"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/yourschool"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/txtAllSchools"
+            android:textColor="@android:color/holo_orange_light"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/bottomLay"
+            android:layout_width="fill_parent"
+            android:layout_height="50dip"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <EditText
+                android:id="@+id/edAllStud"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:singleLine="true" >
+            </EditText>
+
+            <TextView
+                android:id="@+id/txtstud"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="@string/txtStudent"
+                android:textColor="@android:color/holo_orange_light" >
+            </TextView>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@android:color/holo_orange_light" />
+
+    <LinearLayout
+        android:id="@+id/bottomLay"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+         >
+
+        <TextView
+            android:id="@+id/ok"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/txtOk"
+            android:textColor="@android:color/holo_orange_light" >
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

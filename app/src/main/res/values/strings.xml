@@ -6,8 +6,30 @@
     
     <string name="userName">User Name</string>
     <string name="passWord">Password</string>
-    <string name="Email">E-mail</string>
+    <string name="Email">example@gmail.com</string>
     <string name="resetPassword">Repeat Password</string>
     <string name="ok">OK</string>
+
+
+    <string name="txtSettings">Settings</string>
+    <string name="txtSavePhoto">Save Original Photos</string>
+    <string name="txtEmail">Email</string>
+    <string name="txtopinion">Your Opinion Matters</string>
+    <string name="txtTerms">Terms Of Use</string>
+    <string name="txtPolicy">Privacy Policy</string>
+    <string name="txtLogout">LogOut</string>
+
+    <string name="txtPrimary">Primary Email Address</string>
+    <string name="txtSetPrimary">Set your primary email address to save</string>
+    <string name="txtCancel">Cancel</string>
+    <string name="txtSet">Update</string>
+    <string name="txtAdd">\@</string>
+    <string name="txtEdu">.edu</string>
+
+    <string name="txtOurGoal">Our Goal</string>
+    <string name="txtYourSchool">Your School</string>
+    <string name="txtAllSchools">All Schools</string>
+    <string name="txtStudent">students</string>
+    <string name="txtOk">OK</string>
     
 </resources>

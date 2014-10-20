@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Root>
+  <SchoolInfo>
+      <SchoolName> psu </SchoolName>
+  </SchoolInfo>
+  <SchoolInfo>
+      <SchoolName> msu </SchoolName>
+  </SchoolInfo>
+   <SchoolInfo>
+      <SchoolName> asu </SchoolName>
+  </SchoolInfo>
+  <SchoolInfo>
+      <SchoolName> vsu </SchoolName>
+  </SchoolInfo>
+  <SchoolInfo>
+      <SchoolName> fsu </SchoolName>
+  </SchoolInfo>
+  <SchoolInfo>
+      <SchoolName> ksu </SchoolName>
+  </SchoolInfo>
+</Root>

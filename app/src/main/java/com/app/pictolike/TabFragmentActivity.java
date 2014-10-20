@@ -16,10 +16,10 @@ public class TabFragmentActivity extends AbstractAppActivity {
 
     private CameraScreenFragment cameraScreen = new CameraScreenFragment();
     private HomePageActivity homeScreen = new HomePageActivity(this);
-    private SaveScreenActivity settingsScreen = new SaveScreenActivity();
-
+    private SettingsScreenActivity settingsScreen = new SettingsScreenActivity();
+    private ProfileScreenActivity profileScreen = new ProfileScreenActivity();
     private Tab homeTab;
-
+    private Tab profileTab;
     private Tab settingsTab;
     /* **************************************************************** */
     /* ******************* AbstractAppActivity ************************ */
@@ -39,6 +39,8 @@ public class TabFragmentActivity extends AbstractAppActivity {
                 case 1:
                     return cameraScreen;
                 case 2:
+                    return profileScreen;
+                case 3:
                     return settingsScreen;
             }
             return null;
@@ -46,7 +48,7 @@ public class TabFragmentActivity extends AbstractAppActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
     @Override
@@ -66,16 +68,19 @@ public class TabFragmentActivity extends AbstractAppActivity {
         // Set Tab Icon and Titles
         homeTab = actionBar.newTab().setIcon(R.drawable.ic_home_tab);
         cameraTab = actionBar.newTab().setIcon(R.drawable.ic_camera_tab);
+        profileTab = actionBar.newTab().setIcon(R.drawable.ic_profile_tab);
         settingsTab = actionBar.newTab().setIcon(R.drawable.ic_settings_tab);
 
         // Set Tab Listeners
         homeTab.setTabListener(new TabListener(homeScreen,0));
         cameraTab.setTabListener(new TabListener(cameraScreen,1));
-        settingsTab.setTabListener(new TabListener(settingsScreen,2));
+        profileTab.setTabListener(new TabListener(profileScreen,2));
+        settingsTab.setTabListener(new TabListener(settingsScreen,3));
 
         // Add tabs to actionbar
         actionBar.addTab(homeTab);
         actionBar.addTab(cameraTab);
+        actionBar.addTab(profileTab);
         actionBar.addTab(settingsTab);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -98,6 +103,8 @@ public class TabFragmentActivity extends AbstractAppActivity {
                     case 1:
                         return cameraTab;
                     case 2:
+                        return profileTab;
+                    case 3:
                         return settingsTab;
                 }
                 return null;
