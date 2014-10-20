@@ -38,12 +38,14 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
     private ImageView femaleGenButton;
 
     private String sel_gen = "";
-
+    private Calendar mBirthDay;
     private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
 
         @Override
         public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
             edtBirthday.setText(selectedDay + " / " + (selectedMonth + 1) + " / " + selectedYear);
+            mBirthDay = Calendar.getInstance();
+            mBirthDay.set(selectedYear,selectedMonth,selectedDay);
             new FinddayFromFile().execute((selectedMonth + 1) + "-" + selectedDay + "-"
                     + selectedYear);
         }
@@ -223,7 +225,7 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         String email = edtEmail.getText().toString();
         String name = edtUserName.getText().toString();
         String password = edtPassword.getText().toString();
-        String birthday = edtBirthday.getText().toString();
+        long birthday = mBirthDay.getTimeInMillis();
 
         MySQLConnect.signup(name, email, password, birthday, sel_gen, this);
 

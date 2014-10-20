@@ -3,6 +3,7 @@ package com.app.pictolike.mysql;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -18,9 +19,10 @@ class SignupCommand extends MySQLCommand {
 	String m_strPassword;
  
 	String m_strGender;
-	String m_strBirthday;
+	long m_strBirthday;
+    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-	SignupCommand(String name, String email, String password, String gender, String birthday) {
+	SignupCommand(String name, String email, String password, String gender, long birthday) {
 		m_strUserName = name;
 		m_strEmail = email;
 		m_strPassword = password;
@@ -40,8 +42,9 @@ class SignupCommand extends MySQLCommand {
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USER_NAME, m_strUserName));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_EMAIL, m_strEmail));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_PASSWORD, m_strPassword));
- 
-			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_BIRTHDAY, m_strBirthday));
+
+            //format timestamp to MySQL friendly date string
+			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_BIRTHDAY, mSimpleDateFormat.format(m_strBirthday)));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_GENDER, m_strGender));
 			
 			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));

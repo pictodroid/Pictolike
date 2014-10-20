@@ -18,15 +18,15 @@ public class MySQLConnect {
 	public static final int ERR_USER_EXISTS = -3;
 	public static final int ERR_INSERT_FAILED = -4;
 	public static final int ERR_PARSE_FAILED = -5;
-    private static final String BASE_URL = "http://192.168.1.81/";
+//    private static final String BASE_URL = "http://winded976.ddns.net";
+    private static final String BASE_URL = "http://192.168.1.81";
 
     public static HttpClient HTTP_CLIENT = new DefaultHttpClient();
 	
-	public static final String LINK_SIGNIN = "http://192.168.1.81/signin.php";
-	public static final String LINK_SIGNUP = "http://192.168.1.81/signup.php";
-	public static final String LINK_SENTFILE = "http://192.168.1.81/newfile.php";
-	public static final String LINK_GET_HOME_IMAGES = "http://192.168.1.81/getPictoData.php";
-	public static final String LINK_PICT_DATA = "http://192.168.1.81/getPictoData.php";
+	public static final String LINK_SIGNIN = String.format("%s/signin.php",BASE_URL);
+	public static final String LINK_SIGNUP = String.format("%s/signup.php",BASE_URL);
+	public static final String LINK_SENTFILE = String.format("%s/newfile.php",BASE_URL);
+	public static final String LINK_GET_HOME_IMAGES = String.format("%s/getPictoData.php",BASE_URL);
 
 	public static final String USER_NAME = "username";
 	public static final String FIELD_NAME = "filename";
@@ -56,8 +56,8 @@ public class MySQLConnect {
 		run_command(cmd);
 	}
 
-    static public void signup(String name, String email, String password, String birthday, String gender, MySQLCommand.OnCompleteListener listener) {
-        SignupCommand cmd = new SignupCommand(name, email, password, birthday, gender);
+    static public void signup(String name, String email, String password, long birthday, String gender, MySQLCommand.OnCompleteListener listener) {
+        SignupCommand cmd = new SignupCommand(name, email, password, gender, birthday);
         if (listener != null)
             cmd.setOnCompleteListener(listener);
         run_command(cmd);
