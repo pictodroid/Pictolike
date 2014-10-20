@@ -246,11 +246,13 @@ public class HomePageActivity extends Fragment {
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 case MotionEvent.ACTION_POINTER_DOWN:
                     Log.d("TEST", "moving ..... ");
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
                     break;
                 case MotionEvent.ACTION_DOWN: {
                     x_cord = (int) event.getRawX();
                     y_cord = (int) event.getRawY();
                     dir = y_cord > windowheight / 2 ? -1 : 1;
+                    v.getParent().requestDisallowInterceptTouchEvent(true);
                     break;
                 }
                 case MotionEvent.ACTION_MOVE: {
