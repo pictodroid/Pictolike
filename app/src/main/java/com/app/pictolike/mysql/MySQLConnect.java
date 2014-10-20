@@ -18,15 +18,17 @@ public class MySQLConnect {
 	public static final int ERR_USER_EXISTS = -3;
 	public static final int ERR_INSERT_FAILED = -4;
 	public static final int ERR_PARSE_FAILED = -5;
-//    private static final String BASE_URL = "http://winded976.ddns.net";
+    private static final String BASE_URL2 = "http://winded976.ddns.net";
     private static final String BASE_URL = "http://192.168.1.81";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
+    public static final String ACTION_GET_CODE = "getCode";
+    public static final String ACTION= "action";
 
     public static HttpClient HTTP_CLIENT = new DefaultHttpClient();
 	
 	public static final String LINK_SIGNIN = String.format("%s/signin.php",BASE_URL);
-	public static final String LINK_SIGNUP = String.format("%s/signup.php",BASE_URL);
+	public static final String LINK_SIGNUP = String.format("%s/m_app/sign.php",BASE_URL2);
 	public static final String LINK_SENTFILE = String.format("%s/newfile.php",BASE_URL);
 	public static final String LINK_GET_HOME_IMAGES = String.format("%s/getPictoData.php",BASE_URL);
 

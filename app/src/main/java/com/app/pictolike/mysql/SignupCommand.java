@@ -12,8 +12,36 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
-class SignupCommand extends MySQLCommand {
+public class SignupCommand extends MySQLCommand {
+    public static class SignUpResult{
+        public static final SignUpResult FAIL = new SignUpResult(false,"Sign up failed");
+        private boolean mAuth;
+        private String mMessage;
+        private String mSession;
+
+        public SignUpResult(final boolean auth, final String message) {
+            mAuth = auth;
+            mMessage = message;
+        }
+
+        public SignUpResult() {
+
+        }
+
+        public boolean isAuth() {
+            return mAuth;
+        }
+
+        public String getMessage() {
+            return mMessage;
+        }
+
+        public String getSession() {
+            return mSession;
+        }
+    }
 	String m_strUserName;
 	String m_strEmail;
 	String m_strPassword;
@@ -39,6 +67,7 @@ class SignupCommand extends MySQLCommand {
 		// connect server.
 		try {
 			HttpPost httpPost = new HttpPost(MySQLConnect.LINK_SIGNUP);
+			nameValuePair.add(new BasicNameValuePair(MySQLConnect.ACTION, MySQLConnect.ACTION_GET_CODE));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.USER_NAME, m_strUserName));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_EMAIL, m_strEmail));
 			nameValuePair.add(new BasicNameValuePair(MySQLConnect.FIELD_PASSWORD, m_strPassword));
@@ -60,22 +89,27 @@ class SignupCommand extends MySQLCommand {
 		// convert repose to 
 		String result = "";
 		try {
+            StringBuilder lStringBuilder = new StringBuilder();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-			result = reader.readLine();
+            String line = null;
+            while ((line = reader.readLine()) != null)
+                lStringBuilder.append(line + "\n");
+            result = lStringBuilder.toString();
+            JSONObject signUpObj = new JSONObject(result);
+            SignUpResult lSignUpResult = new SignUpResult();
+            lSignUpResult.mAuth = signUpObj.optBoolean("Auth");
+            lSignUpResult.mSession = signUpObj.optString("SESSID");
+            lSignUpResult.mMessage = signUpObj.optString("Message");
+            setResult(lSignUpResult);
+            return;
 		} catch (Exception e) {
 			setErrorCode(MySQLConnect.ERR_LOAD_FAILED);
-			e.printStackTrace();
-			return;
-		}
-		
-		if (result == null)
-			setResult(Boolean.TRUE);
-		else if (result.equals(MySQLConnect.MSG_USER_EXISTS)) {
-			setErrorCode(MySQLConnect.ERR_USER_EXISTS);
-			setResult(Boolean.FALSE);
-		} else if (result.equals(MySQLConnect.MSG_INSERT_FAILED)) {
-			setErrorCode(MySQLConnect.ERR_INSERT_FAILED);
-			setResult(Boolean.FALSE);
-		}			
+
+            setResult(SignUpResult.FAIL);
+            e.printStackTrace();
+            return;
+        }
+
+
 	}
 }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.app.pictolike.Utils.AppConfig;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
+import com.app.pictolike.mysql.SignupCommand;
 
 import java.util.Calendar;
 import java.util.Scanner;
@@ -177,16 +178,14 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         if (AppConfig.DEBUG) {
             Log.d(mTag, "OnComplete :: result = " + result);
         }
-        Boolean b = (Boolean) result;
-        if (b.booleanValue()) {
+        SignupCommand.SignUpResult b = (SignupCommand.SignUpResult) result;
+        if (b.isAuth()) {
             Toast.makeText(SignUpActivity.this, "Sign up successfully", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-            // intent.putExtra("username",
-            // m_edtUserName.getText().toString()+"");
+            Intent intent = new Intent(SignUpActivity.this, TabFragmentActivity.class);
             startActivity(intent);
             finish();
         } else {
-            Toast.makeText(SignUpActivity.this, "Sign up failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignUpActivity.this, b.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
