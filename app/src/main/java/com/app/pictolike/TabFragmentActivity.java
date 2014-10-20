@@ -82,7 +82,12 @@ public class TabFragmentActivity extends AbstractAppActivity {
         actionBar.addTab(cameraTab);
         actionBar.addTab(profileTab);
         actionBar.addTab(settingsTab);
-
+        settingsScreen.setSettingsListener(new SettingsScreenActivity.SettingsListener() {
+            @Override
+            public void onSaveOriginalPhotos() {
+                mViewPager.setCurrentItem(2);
+            }
+        });
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

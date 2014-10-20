@@ -28,6 +28,14 @@ public class SettingsScreenActivity extends Fragment{
 	private LinearLayout layPolicy=null;
 	private LinearLayout layLogout=null;
 
+    public void setSettingsListener(final SettingsListener pSettingsListener) {
+        mSettingsListener = pSettingsListener;
+    }
+
+    public interface SettingsListener{
+        void onSaveOriginalPhotos();
+    }
+    private SettingsListener mSettingsListener;
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -51,9 +59,12 @@ public class SettingsScreenActivity extends Fragment{
         laySave.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Intent i = new Intent(getActivity(),
-                        LandingScreenActivity.class);
-                startActivity(i);
+                  if (mSettingsListener!=null){
+                      mSettingsListener.onSaveOriginalPhotos();
+                  }
+//                Intent i = new Intent(getActivity(),
+//                        LandingScreenActivity.class);
+//                startActivity(i);
             }
         });
 
