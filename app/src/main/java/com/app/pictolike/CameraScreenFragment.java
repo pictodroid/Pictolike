@@ -316,13 +316,14 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
         String filename = photoFile.fileName;
         String datecreated = photoFile.timeStatmp;
         String locationcreated = LocationMgr.getInstance(getActivity()).getLocation();
-
+        float latitude = LocationMgr.getInstance(getActivity()).getLatitude();
+        float longitude = LocationMgr.getInstance(getActivity()).getLongitude();
         String deviceID = "";
         String userage = "";
         String gender = "";
 
         MySQLConnect.savefile(username, filename, datecreated, locationcreated, deviceID, userage,
-                gender,photoFile.file.getAbsolutePath(), new MySQLCommand.OnCompleteListener() {
+                gender,photoFile.file.getAbsolutePath(),longitude,latitude, new MySQLCommand.OnCompleteListener() {
 
                     @Override
                     public void OnComplete(Object result) {

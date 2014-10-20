@@ -30,11 +30,13 @@ class SaveFileCommand extends MySQLCommand {
 	String m_strUsrAge;
 	String m_strUsrGender;
     private String mFilePath;
+    private final float mLatitude;
+    private final float mLongitude;
     String m_strimg221B;
 	
 
 	
-	SaveFileCommand(String username,String filename, String datecreated,String locationcreated , String deviceID, String userage, String gender,String filePath) {
+	SaveFileCommand(String username,String filename, String datecreated,String locationcreated , String deviceID, String userage, String gender,String filePath,float latitude,float longitude) {
 		m_strUserName = username;
 		m_strFileName = filename;
 		m_strDateCreated=datecreated;
@@ -43,6 +45,8 @@ class SaveFileCommand extends MySQLCommand {
 	    m_strUsrAge=userage;
 		m_strUsrGender=gender;
         mFilePath = filePath;
+        mLatitude = latitude;
+        mLongitude = longitude;
         //m_strimg221B= img221B; //for now initiallize to zero
 		m_strimg221B = "";
 		
@@ -65,6 +69,8 @@ class SaveFileCommand extends MySQLCommand {
             lMultipartEntity.addPart(MySQLConnect.USERAGE,new StringBody(m_strUsrAge));
             lMultipartEntity.addPart(MySQLConnect.LOCATION_CREATED,new StringBody(m_strLocationCreated));
             lMultipartEntity.addPart(MySQLConnect.FILE_CONTENT,new FileBody(new File(mFilePath)));
+            lMultipartEntity.addPart(MySQLConnect.LONGITUDE,new StringBody(String.valueOf(mLongitude)));
+            lMultipartEntity.addPart(MySQLConnect.LATITUDE,new StringBody(String.valueOf(mLatitude)));
 
 
 

@@ -49,8 +49,8 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
             }
         });
         if (BuildConfig.DEBUG){
-            userName.setText("test");
-            userPassword.setText("qwerty");
+            userName.setText("test1");
+            userPassword.setText("test1");
         }
         findViewById(R.id.button_comein).setOnClickListener(new OnClickListener() {
 

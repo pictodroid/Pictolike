@@ -20,6 +20,8 @@ public class MySQLConnect {
 	public static final int ERR_PARSE_FAILED = -5;
 //    private static final String BASE_URL = "http://winded976.ddns.net";
     private static final String BASE_URL = "http://192.168.1.81";
+    public static final String LATITUDE = "latitude";
+    public static final String LONGITUDE = "longitude";
 
     public static HttpClient HTTP_CLIENT = new DefaultHttpClient();
 	
@@ -69,8 +71,8 @@ public class MySQLConnect {
         cmd.setOnCompleteListener(listener);
         run_command(cmd);
     }
-	static public void savefile(String username,String filename, String datecreated, String locationcreated,  String deviceID, String userage, String gender,String filePath, MySQLCommand.OnCompleteListener listener) {
-		SaveFileCommand cmd = new SaveFileCommand(username,filename, datecreated, locationcreated, deviceID, userage, gender,filePath);
+	static public void savefile(String username,String filename, String datecreated, String locationcreated,  String deviceID, String userage, String gender,String filePath,float longitude, float latitude, MySQLCommand.OnCompleteListener listener) {
+		SaveFileCommand cmd = new SaveFileCommand(username,filename, datecreated, locationcreated, deviceID, userage, gender,filePath,latitude,longitude);
 		if (listener != null)
 			cmd.setOnCompleteListener(listener);
 		run_command(cmd);

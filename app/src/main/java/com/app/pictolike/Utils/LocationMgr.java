@@ -18,6 +18,8 @@ public class LocationMgr {
 
     private Context ctx;
     private String location = "";
+    private float mLongitude = 0;
+    private float mLatitude = 0;
 
     private LocationMgr(Context ctx) {
         this.ctx = ctx;
@@ -66,6 +68,8 @@ public class LocationMgr {
         Location loc = getLastBestLocation();
         if (loc == null)
             return;
+        mLatitude = (float) loc.getLatitude();
+        mLongitude = (float) loc.getLongitude();
 
         Geocoder geocoder = new Geocoder(ctx, Locale.getDefault());
         List<Address> addresses = null;
@@ -101,5 +105,13 @@ public class LocationMgr {
                 Log.e(TAG, "findAddress :: GeocoderTask Exception" + location, e);
             }
         }
+    }
+
+    public float getLatitude() {
+        return mLatitude;
+    }
+
+    public float getLongitude() {
+        return mLongitude;
     }
 }
