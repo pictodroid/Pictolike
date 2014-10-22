@@ -26,4 +26,10 @@ public class AbstractAppActivity extends Activity {
         ApplicationActivitiesHolder.addActivity(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+//        super.onBackPressed();
+    }
 }
