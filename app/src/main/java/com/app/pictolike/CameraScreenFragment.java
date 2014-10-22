@@ -86,9 +86,6 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
                 FileOutputStream fos = new FileOutputStream(photoFile.photoFile);
                 fos.write(data);
                 fos.close();
-                Toast.makeText(getActivity(),
-                        "Image saved to phone" , Toast.LENGTH_LONG)
-                        .show();
             } catch (FileNotFoundException e) {
                 if (AppConfig.DEBUG) {
                     Log.d(TAG, "onPictureTaken :: failed to load image", e);
@@ -327,7 +324,7 @@ public class CameraScreenFragment extends Fragment implements SurfaceHolder.Call
 
                     @Override
                     public void OnComplete(Object result) {
-                        waitingDlg.showMessage("Photo upload complete!");
+                        waitingDlg.showMessage("Photo uploaded and saved to the profile");
                     }
                 });
 

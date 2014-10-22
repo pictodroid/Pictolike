@@ -2,31 +2,31 @@
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:drawable="@drawable/sun_1"
+        android:drawable="@drawable/hollow01"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_2"
+        android:drawable="@drawable/hollow02"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_3"
+        android:drawable="@drawable/hollow03"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_4"
+        android:drawable="@drawable/hollow04"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_5"
+        android:drawable="@drawable/hollow05"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_6"
+        android:drawable="@drawable/hollow06"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_7"
+        android:drawable="@drawable/hollow07"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_8"
+        android:drawable="@drawable/hollow08"
         android:duration="200"/>
     <item
-        android:drawable="@drawable/sun_9"
+        android:drawable="@drawable/hollow09"
         android:duration="200"/>
 
 </animation-list>

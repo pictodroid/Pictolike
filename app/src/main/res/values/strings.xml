@@ -6,7 +6,7 @@
     
     <string name="userName">User Name</string>
     <string name="passWord">Password</string>
-    <string name="Email">yourschool@email.edu</string>
+    <string name="Email">Email</string>
     <string name="resetPassword">Repeat Password</string>
     <string name="ok">OK</string>
 

@@ -29,7 +29,14 @@ public class AbstractAppActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
-//        super.onBackPressed();
+        if (overrideBack()) {
+            moveTaskToBack(true);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    protected boolean overrideBack() {
+        return false;
     }
 }

@@ -20,16 +20,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.pictolike.Utils.AppConfig;
+import com.app.pictolike.Utils.KeyboardHelper;
+import com.app.pictolike.dialogs.BirthdaySelectionDialog;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
 import com.app.pictolike.mysql.SignupCommand;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Scanner;
 
-public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.OnCompleteListener {
+import de.greenrobot.event.EventBus;
 
-    private static final int DATE_SELECTION_DIALOG = 0;
+public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.OnCompleteListener {
+    private final SimpleDateFormat BIRTHDATE_FORMAT=new SimpleDateFormat("dd/MM/yyyy");
+    private final SimpleDateFormat WEEKDAY_FORMAT=new SimpleDateFormat("EEEE", Locale.ENGLISH);
 
     private EditText edtUserName;
     private EditText edtEmail;
@@ -41,9 +47,7 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
     private ImageView femaleGenButton;
     private String sel_gen = "";
     private Calendar mBirthDay;
-    private int day;
-    private int month;
-    private int year;
+    private View mSignUpButton;
 
 
     /* **************************************************************** */
@@ -65,18 +69,11 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         txtTermsAndCondition=(TextView)findViewById(R.id.tv_terms_and_condition);
         txtTermsAndCondition.setMovementMethod(LinkMovementMethod.getInstance());
         mBirthDay = Calendar.getInstance();
-        day = mBirthDay.get(Calendar.DAY_OF_MONTH);
-        month = mBirthDay.get(Calendar.MONTH);
-        year = mBirthDay.get(Calendar.YEAR);
         mTopLyt =(RelativeLayout) findViewById(R.id.lytmain);
         mTopLyt.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(getCurrentFocus()!=null) {
-                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                }
-                // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+                KeyboardHelper.hideKeyboard(SignUpActivity.this,getCurrentFocus());
             }
         });
         findViewById(R.id.reg_birthday_edittext_invisible_click_watcher).setOnClickListener(
@@ -87,7 +84,9 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
                         if (AppConfig.DEBUG) {
                             Log.d(mTag, "onClick :: Inside Birthday field");
                         }
-                        showDialog(DATE_SELECTION_DIALOG);
+                        BirthdaySelectionDialog lBirthdaySelectionDialog = new BirthdaySelectionDialog();
+                        lBirthdaySelectionDialog.setInitialDate(mBirthDay);
+                        lBirthdaySelectionDialog.show(getFragmentManager(),"birthday_select");
                     }
                 });
 
@@ -140,46 +139,54 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
             }
         });
 
-        findViewById(R.id.sign_up_btn).setOnClickListener(new OnClickListener() {
+        mSignUpButton = findViewById(R.id.sign_up_btn);
+        mSignUpButton.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 if (AppConfig.DEBUG) {
                     Log.d(mTag, "onClick :: sign up button pressed");
                 }
+                mSignUpButton.setEnabled(false);
                 if (validate()) {
                     onSignUp();
+                } else{
+                    mSignUpButton.setEnabled(true);
                 }
             }
         });
 
     }
 
-    @Override
-    @Deprecated
-    protected Dialog onCreateDialog(int id) {
-        DatePickerDialog dialog = new DatePickerDialog(this, datePickerListener, year, month, day);
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.YEAR,2004);
-        dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
-        return dialog;
-       // return new DatePickerDialog(this, datePickerListener, year, month, day);
-    }
-    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
-        public void onDateSet(DatePicker view, int selectedYear,
-                              int selectedMonth, int selectedDay) {
-            edtBirthday.setText(selectedDay + " / " + (selectedMonth + 1) + " / "
-                    + selectedYear);
-            new FinddayFromFile().execute((selectedMonth + 1)+"-"+selectedDay+"-"+selectedYear);
-        }
-    };
+    @SuppressWarnings("unused")
+    /**
+     * Event called on UI thread from {@link com.app.pictolike.dialogs.BirthdaySelectionDialog} when date is selected
+     */
+    public void onEventMainThread(BirthdaySelectionDialog pBirthdaySelectionDialog){
+        edtBirthday.setText(BIRTHDATE_FORMAT.format(pBirthdaySelectionDialog.getSelectedDate()));
+        mBirthDay.setTime(pBirthdaySelectionDialog.getSelectedDate());
 
+        Toast.makeText(SignUpActivity.this,String.format("did you know that you were born on a %s?!",WEEKDAY_FORMAT.format(mBirthDay.getTime())) ,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
+    }
     /* **************************************************************** */
     /* ************** MySQLCommand.OnCompleteListener ***************** */
     /* **************************************************************** */
 
     @Override
     public void OnComplete(Object result) {
+        mSignUpButton.setEnabled(true);
         if (AppConfig.DEBUG) {
             Log.d(mTag, "OnComplete :: result = " + result);
         }
@@ -231,54 +238,14 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         String password = edtPassword.getText().toString();
         long birthday = mBirthDay.getTimeInMillis();
 
+        String deviceId = userPhoneIDExport();
         MySQLConnect.signup(name, email, password, birthday, sel_gen, this);
 
-        String deviceId = userPhoneIDExport();
     }
 
     private String userPhoneIDExport() {
         return Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
     }
 
-
-
-    class FinddayFromFile extends AsyncTask<String, Void, String>
-    {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String Day="";
-            try{
-                Scanner sc=new Scanner(getResources().openRawResource(R.raw.weekday));
-                while(sc.hasNext())
-                {
-                    String str=sc.nextLine();
-                    if(str.contains(params[0]))
-                    {
-                        Day=str;
-                        break;
-                    }
-                }
-                sc.close();
-            }catch(Exception e)
-            {
-                Log.e("error", e.toString());
-            }
-            if(!Day.equals(""))
-            {
-                String array[]=Day.split(",");
-                Log.d(array[0], array[1]);
-                return array[1];
-            }
-            else
-                return "";
-        }
-        @Override
-        protected void onPostExecute(String result) {
-            if(!result.equals(""))
-                Toast.makeText(SignUpActivity.this,"did you know that you were born on a "+result+"?!" ,Toast.LENGTH_LONG).show();
-            super.onPostExecute(result);
-        }
-    }
 
 }

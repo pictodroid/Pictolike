@@ -1,12 +1,30 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme.Light">
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
         <item name="android:actionDropDownStyle">@style/DropDownNav</item>
         <item name="android:popupMenuStyle">@style/PopUp</item>
+
     </style>
 
     <style name="PopUp" parent="@android:style/Widget.Holo.Light.ListPopupWindow">
         <item name="android:popupBackground">@android:color/white</item>
+
+    </style>
+    <style name="AppTheme.Dialog" parent="android:Theme.Holo.Light.Dialog">
+        <item name="android:windowTitleStyle">@style/AppTheme.Dialog.WindowTitle</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+
+
+    </style>
+
+    <style name="AppTheme.Dialog.TitleText">
+        <item name="android:textColor">#FBC261</item>
+        <item name="android:textSize">22sp</item>
+
+    </style>
+    <style name="AppTheme.Dialog.WindowTitle">
+       <item name="android:textAppearance">@style/AppTheme.Dialog.TitleText</item>
+
     </style>
 
     <style name="DropDownNav" parent="@android:style/Widget.Holo.Light.Spinner">

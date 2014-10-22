@@ -25,6 +25,12 @@ public class TabFragmentActivity extends AbstractAppActivity {
     /* ******************* AbstractAppActivity ************************ */
     /* **************************************************************** */
     private ViewPager mViewPager;
+
+    @Override
+    protected boolean overrideBack() {
+        return true;
+    }
+
     private class TabsAdapter extends FragmentPagerAdapter{
 
         public TabsAdapter(final FragmentManager fm) {
