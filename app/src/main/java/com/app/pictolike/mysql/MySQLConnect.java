@@ -18,8 +18,8 @@ public class MySQLConnect {
 	public static final int ERR_USER_EXISTS = -3;
 	public static final int ERR_INSERT_FAILED = -4;
 	public static final int ERR_PARSE_FAILED = -5;
-    private static final String BASE_URL2 = "http://winded976.ddns.net";
-    private static final String BASE_URL = "http://192.168.1.81";
+    private static final String BASE_URL2 = "http://178.44.215.68:80";
+    private static final String BASE_URL = "http://178.44.215.68:80";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String ACTION_GET_CODE = "getCode";
