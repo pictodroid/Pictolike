@@ -34,7 +34,7 @@
             android:background="@drawable/edittext_background_white"
             android:ems="10"
             android:imeOptions="actionNext"
-            android:hint="E-mail"
+            android:hint="Email"
             android:inputType="textEmailAddress"
             android:paddingLeft="10dp"
             android:textColor="#FBC261"
@@ -120,6 +120,13 @@
             android:layout_weight="1"
             android:scaleType="fitCenter"
             android:src="@drawable/happy_pictoliking_selector" />
+        <TextView
+            android:id="@+id/tv_terms_and_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="20dp"
+            android:text="@string/txtTermsAndCondition"/>
     </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

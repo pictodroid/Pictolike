@@ -3,6 +3,7 @@ package com.app.pictolike;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -26,6 +27,7 @@ import com.app.pictolike.data.PictoFile;
 import com.app.pictolike.helpers.ImageLoaderHelper;
 import com.app.pictolike.mysql.MySQLCommand;
 import com.app.pictolike.mysql.MySQLConnect;
+import com.app.pictolike.mysql.ReportStatus;
 import com.app.pictolike.sqlite.SqliteHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
@@ -57,7 +59,7 @@ public class HomePageActivity extends Fragment {
     boolean rotateRight;
 
     private RelativeLayout parentView;
-    private ImageView likingStatus;
+    private ImageView likingStatus,hintImage;
     Activity activity;
     private SqliteHandler mSqliteHandler;
     public HomePageActivity(Activity activity) {
@@ -80,13 +82,20 @@ public class HomePageActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_homepage, container, false);
-
         setupViews(rootView);
         return rootView;
     }
 
 
     public void setupViews(View rootView) {
+
+        Button btnReportStatus = (Button) rootView.findViewById (R.id.btn_report);
+         btnReportStatus.setOnClickListener(new View.OnClickListener() {
+             @Override
+            public void onClick(View v) {
+                 ReportStatus.reportStatus(true);
+                 }
+             });
 
         // super.onCreate(savedInstanceState);
 
@@ -101,6 +110,7 @@ public class HomePageActivity extends Fragment {
         // ColorDrawable cd = new ColorDrawable(0xFFFBAC00);
         // bar.setBackgroundDrawable(cd);
         likingStatus = (ImageView) rootView.findViewById(R.id.imageview_liking_status);
+        hintImage = (ImageView) rootView.findViewById(R.id.imageview_home);
         parentView = (RelativeLayout) rootView.findViewById(R.id.layoutview);
         Point windowPoint = new Point();
         getActivity().getWindowManager().getDefaultDisplay().getSize(windowPoint);
@@ -111,7 +121,14 @@ public class HomePageActivity extends Fragment {
 
         int[] myImageList = new int[] { R.drawable.like_pic, R.drawable.like_pic2,
                 R.drawable.like_pic3, R.drawable.like_pic4 };
-        loadPhotos();
+        likingStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(getActivity(),HomeDialogHint.class);
+                startActivity(in);
+            }
+        });
+
 //        initPhotos();
     }
 
@@ -127,10 +144,11 @@ public class HomePageActivity extends Fragment {
     @Override
     public void onResume() {
         if(!SharedpreferenceUtility.getInstance(getActivity()).getBoolean(Constant.HOMEFIRSTLAUNCH)){
-            parentView.setBackgroundResource(R.drawable.welcome);
+            hintImage.setBackgroundResource(R.drawable.welcome);
             SharedpreferenceUtility.getInstance(getActivity()).putBoolean(Constant.HOMEFIRSTLAUNCH,true);
         }else{
-            parentView.setBackground(null);
+            //loadPhotos();
+            hintImage.setBackground(null);
         }
         super.onResume();
     }

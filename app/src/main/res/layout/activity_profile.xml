@@ -60,6 +60,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="horizontal" >
 
         <ProgressBar
@@ -71,7 +72,8 @@
     <Button
         android:id="@+id/btn_bar_bottom_refresh"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
         android:background="@drawable/bar_bottom_selector"
         android:gravity="center"
         android:orientation="horizontal" >

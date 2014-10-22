@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
-import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.pictolike.Utils.AppConfig;
@@ -34,23 +35,16 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
     private EditText edtEmail;
     private EditText edtPassword;
     private EditText edtBirthday;
+    private TextView txtTermsAndCondition;
     private RelativeLayout mTopLyt;
     private ImageView maleGenButton;
     private ImageView femaleGenButton;
-
     private String sel_gen = "";
     private Calendar mBirthDay;
-    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+    private int day;
+    private int month;
+    private int year;
 
-        @Override
-        public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDay) {
-            edtBirthday.setText(selectedDay + " / " + (selectedMonth + 1) + " / " + selectedYear);
-            mBirthDay = Calendar.getInstance();
-            mBirthDay.set(selectedYear,selectedMonth,selectedDay);
-            new FinddayFromFile().execute((selectedMonth + 1) + "-" + selectedDay + "-"
-                    + selectedYear);
-        }
-    };
 
     /* **************************************************************** */
     /* ******************* AbstractAppActivity ************************ */
@@ -68,6 +62,12 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         edtEmail = (EditText) findViewById(R.id.reg_email_edittext);
         edtPassword = (EditText) findViewById(R.id.reg_password_edittext);
         edtBirthday = (EditText) findViewById(R.id.reg_birthday_edittext);
+        txtTermsAndCondition=(TextView)findViewById(R.id.tv_terms_and_condition);
+        txtTermsAndCondition.setMovementMethod(LinkMovementMethod.getInstance());
+        mBirthDay = Calendar.getInstance();
+        day = mBirthDay.get(Calendar.DAY_OF_MONTH);
+        month = mBirthDay.get(Calendar.MONTH);
+        year = mBirthDay.get(Calendar.YEAR);
         mTopLyt =(RelativeLayout) findViewById(R.id.lytmain);
         mTopLyt.setOnClickListener(new OnClickListener() {
             @Override
@@ -158,16 +158,21 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
     @Override
     @Deprecated
     protected Dialog onCreateDialog(int id) {
-        if (DATE_SELECTION_DIALOG == id) {
-            Calendar cal = Calendar.getInstance();
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-            int month = cal.get(Calendar.MONTH);
-            int year = cal.get(Calendar.YEAR);
-            return new DatePickerDialog(this, datePickerListener, year, month, day);
-        } else {
-            return null;
-        }
+        DatePickerDialog dialog = new DatePickerDialog(this, datePickerListener, year, month, day);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR,2004);
+        dialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+        return dialog;
+       // return new DatePickerDialog(this, datePickerListener, year, month, day);
     }
+    private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            edtBirthday.setText(selectedDay + " / " + (selectedMonth + 1) + " / "
+                    + selectedYear);
+            new FinddayFromFile().execute((selectedMonth + 1)+"-"+selectedDay+"-"+selectedYear);
+        }
+    };
 
     /* **************************************************************** */
     /* ************** MySQLCommand.OnCompleteListener ***************** */
@@ -235,44 +240,45 @@ public class SignUpActivity extends AbstractAppActivity implements MySQLCommand.
         return Secure.getString(this.getContentResolver(), Secure.ANDROID_ID);
     }
 
-    private class FinddayFromFile extends AsyncTask<String, Void, String> {
+
+
+    class FinddayFromFile extends AsyncTask<String, Void, String>
+    {
 
         @Override
         protected String doInBackground(String... params) {
-            String day = "";
-            try {
-                Scanner sc = new Scanner(getResources().openRawResource(R.raw.weekday));
-                while (sc.hasNext()) {
-                    String str = sc.nextLine();
-                    if (str.contains(params[0])) {
-                        day = str;
+            String Day="";
+            try{
+                Scanner sc=new Scanner(getResources().openRawResource(R.raw.weekday));
+                while(sc.hasNext())
+                {
+                    String str=sc.nextLine();
+                    if(str.contains(params[0]))
+                    {
+                        Day=str;
                         break;
                     }
                 }
                 sc.close();
-            } catch (Exception e) {
-                if (AppConfig.DEBUG) {
-                    Log.e(mTag, "Error while reading weekday.cvs", e);
-                }
+            }catch(Exception e)
+            {
+                Log.e("error", e.toString());
             }
-            if (!TextUtils.isEmpty(day)) {
-                String array[] = day.split(",");
-                if (AppConfig.DEBUG) {
-                    Log.e(mTag, "weekday.cvs first item = " + array[1]);
-                }
+            if(!Day.equals(""))
+            {
+                String array[]=Day.split(",");
+                Log.d(array[0], array[1]);
                 return array[1];
-            } else {
-                return "";
             }
+            else
+                return "";
         }
-
         @Override
         protected void onPostExecute(String result) {
-            if (!result.equals(""))
-                Toast.makeText(SignUpActivity.this,
-                        "did you know that you were born on a " + result + "?!", Toast.LENGTH_LONG)
-                        .show();
+            if(!result.equals(""))
+                Toast.makeText(SignUpActivity.this,"did you know that you were born on a "+result+"?!" ,Toast.LENGTH_LONG).show();
             super.onPostExecute(result);
         }
     }
+
 }

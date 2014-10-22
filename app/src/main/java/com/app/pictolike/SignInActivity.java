@@ -45,7 +45,6 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
                     InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 }
-               // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             }
         });
         if (BuildConfig.DEBUG){
@@ -56,10 +55,10 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
 
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(SignInActivity.this, TabFragmentActivity.class);
-//                startActivity(intent);
-//                finish();
-               onSignIn();
+                Intent intent = new Intent(SignInActivity.this, TabFragmentActivity.class);
+                startActivity(intent);
+                finish();
+              // onSignIn();
             }
         });
 
@@ -67,10 +66,10 @@ public class SignInActivity extends AbstractAppActivity implements MySQLCommand.
 
             @Override
             public void onClick(View v) {
-                Toast.makeText(SignInActivity.this, "Not supported yet", Toast.LENGTH_SHORT).show();
-                // Intent i = new Intent(SignInActivity.this,
-                // ForgotPasswordScreenActivity.class);
-                // SignInActivity.this.startActivity(i);
+                //Toast.makeText(SignInActivity.this, "Not supported yet", Toast.LENGTH_SHORT).show();
+                 Intent i = new Intent(SignInActivity.this,
+                 ForgotPasswordScreenActivity.class);
+                 SignInActivity.this.startActivity(i);
             }
 
         });

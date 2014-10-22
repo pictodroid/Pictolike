@@ -37,7 +37,7 @@ public class ForgotPasswordScreenActivity extends AbstractAppActivity implements
         ColorDrawable cd = new ColorDrawable(0xFFFBAC00);
         bar.setBackgroundDrawable(cd);
 
-        setContentView(R.layout.actvity_signin);
+        setContentView(R.layout.actvity_forgotpassword);
         // SignIn=(ImageView)findViewById(R.id.Login);
         //
         // signInActivity=(LinearLayout)findViewById(R.id.signInAcitivty);
